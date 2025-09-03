@@ -8,6 +8,7 @@
     "start": "webpack serve",
     "dev": "webpack serve --mode development --open",
     "test": "jest",
+      "test:leaks": "jest --detectOpenHandles",
     "test:coverage": "jest --coverage",
     "test:dev": "jest --watch",
     "lint": "lint-staged",

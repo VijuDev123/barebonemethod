@@ -4,7 +4,7 @@ import "@testing-library/jest-dom/extend-expect";
 import { BrowserRouter } from "react-router-dom";
 
 import movieApiClient from "../utils/apiClient";
-import TrendingNow from "./UpcomingMovies";
+import TrendingNow from "./TrendingNow";
 
 jest.mock("../utils/movieApiClient");
 
@@ -44,7 +44,7 @@ describe("TrendingNow", () => {
       render(
         <BrowserRouter>
           <TrendingNow />
-        </BrowserRouter>
+        </BrowserRouter>,
       );
     });
 
@@ -57,7 +57,7 @@ describe("TrendingNow", () => {
     const mockError = { message: "An error occurred", isError: true };
 
     (movieApiClient.getMovieListNowPlaying as jest.Mock).mockResolvedValueOnce(
-      mockError
+      mockError,
     );
 
     // When
@@ -65,13 +65,13 @@ describe("TrendingNow", () => {
       render(
         <BrowserRouter>
           <TrendingNow />
-        </BrowserRouter>
+        </BrowserRouter>,
       );
     });
 
     // Then
     await waitFor(() =>
-      expect(movieApiClient.getMovieListNowPlaying).toHaveBeenCalledTimes(1)
+      expect(movieApiClient.getMovieListNowPlaying).toHaveBeenCalledTimes(1),
     );
 
     const regex = new RegExp(mockError.message);

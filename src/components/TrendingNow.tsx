@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
-import SimpleMovieCard from "./SimpleMovieCard";
 import movieApiClient from "../utils/apiClient";
+import SimpleMovieCard from "./SimpleMovieCard";
 import { ErrorMessage, PageSection, SectionTitle } from "./styled";
 import LoadingIndicator from "./styled/LoadingIndicator";
 
-export default function UpcomingMovies() {
-  const [movieListUpcoming, setMovieListUpcoming] = useState<Movie[] | null>(
+export default function TrendingNow() {
+  const [movieListTrending, setMovieListTrending] = useState<Movie[] | null>(
     []
   );
   const [error, setFetchError] = useState<ApiError | null>(null);
@@ -17,11 +17,11 @@ export default function UpcomingMovies() {
     const fetchMovies = async () => {
       try {
         setLoading(true);
-        const data = await movieApiClient.getMovieListUpcoming();
+        const data = await movieApiClient.getMovieListNowPlaying();
         if ("message" in data) {
           setFetchError({ message: data.message, isError: true });
         } else {
-          setMovieListUpcoming(data.results);
+          setMovieListTrending(data.results);
         }
       } catch (err) {
         setFetchError({ message: "An error occured.", isError: true });
@@ -35,52 +35,52 @@ export default function UpcomingMovies() {
 
   if (loading) {
     return (
-      <PageSection aria-labelledby="upcoming-movies-now-heading">
-        <SectionTitle>Upcoming Movies</SectionTitle>
-        <UpcomingContainer>
-          <LoadingIndicator data-testid="upcoming-movies-loading" />
-        </UpcomingContainer>
+      <PageSection aria-labelledby="trending-movies-now-heading">
+        <SectionTitle>Trending Now</SectionTitle>
+        <TrendingContainer>
+          <LoadingIndicator data-testid="trending-now-movies-loading" />
+        </TrendingContainer>
       </PageSection>
     );
   }
 
   if (error) {
     return (
-      <PageSection aria-labelledby="upcoming-movies-now-heading">
-        <SectionTitle>Upcoming Movies</SectionTitle>
-        <UpcomingContainer>
+      <PageSection aria-labelledby="trending-movies-now-heading">
+        <SectionTitle>Trending Now</SectionTitle>
+        <TrendingContainer>
           <ErrorMessage
-            data-testid="upcoming-movies-error-message"
+            data-testid="trending-movies-error-message"
             aria-live="polite"
           >
             {error.message}
           </ErrorMessage>
-        </UpcomingContainer>
+        </TrendingContainer>
       </PageSection>
     );
   }
 
   return (
-    <PageSection aria-labelledby="upcoming-movies-now-heading">
-      <SectionTitle>Upcoming Movies</SectionTitle>
-      <UpcomingContainer
-        data-testid={"upcoming-movies-container"}
-        aria-label="List of upcoming movies"
+    <PageSection aria-labelledby="trending-movies-now-heading">
+      <SectionTitle>Trending Now</SectionTitle>
+      <TrendingContainer
+        data-testid={"trending-movies-container"}
+        aria-label="List of trending movies"
         role="list"
       >
-        {movieListUpcoming?.map((mov) => (
+        {movieListTrending?.map((mov) => (
           <SimpleMovieCard
-            data-testid={`upcoming-movies-card-${mov.id}`}
+            data-testid={`trending-movies-card-${mov.id}`}
             movie={mov}
             key={mov.id}
           />
         ))}
-      </UpcomingContainer>
+      </TrendingContainer>
     </PageSection>
   );
 }
 
-const UpcomingContainer = styled.div`
+const TrendingContainer = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
