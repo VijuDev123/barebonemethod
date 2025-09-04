@@ -2,12 +2,14 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
 
-import SearchBar from "./SearchBar";
+import { SearchBar } from "./SearchBar";
 
 describe("SearchBar", () => {
   test("displays welcome message and subtitle", () => {
     // Arrange
-    render(<SearchBar />);
+    render(
+      <SearchBar onChange={jest.fn()} onButtonClick={jest.fn()} value="" />
+    );
 
     // Act
     const welcomeMessage = screen.getByText("Welcome.");

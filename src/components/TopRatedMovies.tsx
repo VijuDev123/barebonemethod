@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
 
 import movieApiClient from "../utils/apiClient";
-import SimpleMovieCard from "./SimpleMovieCard";
-import { PageSection, SectionTitle, ErrorMessage } from "./styled";
-import LoadingIndicator from "./styled/LoadingIndicator";
+import MovieSlider from "./MovieSlider";
 
 export default function TopRatedMovies() {
-  const [moviesTopRated, setMoviesTopRated] = useState<Movie[] | null>([]);
+  const [moviesTopRated, setMoviesTopRated] = useState<Movie[]>();
   const [error, setFetchError] = useState<ApiError | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -32,46 +29,12 @@ export default function TopRatedMovies() {
   }, []);
 
   return (
-    <PageSection aria-labelledby="top-rated-movies-heading">
-      <SectionTitle>Top Rated</SectionTitle>
-      <TopRatedContainer
-        data-testid={"top-rated-movies-container"}
-        aria-label="List of top rated movies"
-        role="list"
-      >
-        {loading ? (
-          <LoadingIndicator data-testid="top-rated-movies-loading-indicator"/> 
-        ) : (
-          !error &&
-          moviesTopRated?.map((movie) => (
-            <SimpleMovieCard
-              data-testid={`top-rated-movies-card-${movie.id}`}
-              movie={movie}
-              key={movie.id}
-            />
-          ))
-        )}
-      </TopRatedContainer>
-      {error && (
-        <ErrorMessage data-testid="top-rated-movies-error-message" aria-live="polite">
-          {error?.message}
-        </ErrorMessage>
-      )}
-    </PageSection>
+    <MovieSlider
+      movieList={moviesTopRated}
+      error={error}
+      headingText="TopRated"
+      loading={loading}
+      listType="topRated"
+    />
   );
 }
-
-const TopRatedContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: space-between;
-  overflow: scroll;
-  max-height: 200px;
-  -ms-overflow-style: none;
-  scrollbar-width: none; 
-  padding-bottom: 20px;
-  ::-webkit-scrollbar {
-    display: none;
-  }
-`;

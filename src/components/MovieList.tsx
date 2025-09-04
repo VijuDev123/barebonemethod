@@ -1,46 +1,36 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styled from "styled-components";
-import movieApiClient from "../utils/apiClient";
 import MovieCard from "./MovieCard";
 import { ErrorMessage } from "./styled";
 import LoadingIndicator from "./styled/LoadingIndicator";
 
-export default function MovieList() {
-  const [movieList, setMovieList] = useState<Movie[]>([]);
-  const [error, setFetchError] = useState<ApiError | null>();
-  const [loading, setLoading] = useState<boolean>(true); // New loading state
+interface IMovieList {
+  movieList?: Movie[];
+  error?: ApiError | null;
+  loading?: boolean;
+}
 
-  async function getMovies() {
-    try {
-      setLoading(true);
-      const response = await movieApiClient.getMovieList();
-      if ("message" in response) {
-        setFetchError(response);
-      } else {
-        setMovieList(response.results);
-      }
-    } finally {
-      setLoading(false);
-    }
-  }
+export const MovieList: React.FC<IMovieList> = (props) => {
+  const { movieList, error, loading } = props;
 
-  useEffect(() => {
-    getMovies();
-  }, []);
-
-  if(loading){
+  if (loading) {
     return (
       <MovieListContainer>
-        <LoadingIndicator aria-live="polite" aria-busy={loading} data-testid="main-movie-list-loading"/>
+        <LoadingIndicator
+          aria-live="polite"
+          aria-busy={loading}
+          data-testid="main-movie-list-loading"
+        />
       </MovieListContainer>
     );
   }
 
-
-  if(error){
+  if (error) {
     return (
       <MovieListContainer>
-        <ErrorMessage aria-live="polite" data-testid="main-movie-list-error">{error.message}</ErrorMessage>
+        <ErrorMessage aria-live="polite" data-testid="main-movie-list-error">
+          {error.message}
+        </ErrorMessage>
       </MovieListContainer>
     );
   }
@@ -49,14 +39,15 @@ export default function MovieList() {
     <MovieListContainer>
       {!error && !loading && (
         <MovieCardListWrapper role="list">
-          {movieList && movieList.map((movie) => (
-            <MovieCard movie={movie} key={movie.id} />
-          ))}
+          {movieList &&
+            movieList.map((movie) => (
+              <MovieCard movie={movie} key={movie.id} />
+            ))}
         </MovieCardListWrapper>
       )}
     </MovieListContainer>
   );
-}
+};
 
 const MovieCardListWrapper = styled.div`
   display: flex;

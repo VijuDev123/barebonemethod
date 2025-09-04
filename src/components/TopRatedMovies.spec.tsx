@@ -9,7 +9,10 @@ jest.mock("../utils/movieApiClient");
 jest.mock(
   "./SimpleMovieCard",
   () =>
-    function SimpleMovieCardMock(props: { movie: Movie; "data-testid": string }) {
+    function SimpleMovieCardMock(props: {
+      movie: Movie;
+      "data-testid": string;
+    }) {
       return <div data-testid={props["data-testid"]}>{props.movie.title}</div>;
     }
 );

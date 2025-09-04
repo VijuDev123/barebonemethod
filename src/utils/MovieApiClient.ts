@@ -43,10 +43,11 @@ export default class ApiClient {
     return this.fetchFromApi<FullMovieResponse>(url);
   }
 
-  async getMovieList(): Promise<ApiResponse<Movie> | ApiError> {
-    const url = `${this.apiUrl}/search/movie?query=star%20wars&api_key=${this.apiKey}`;
-    return this.fetchFromApi<ApiResponse<Movie>>(url);
-  }
+ async getMovieList(searchText = "star wars", currentPage = 1) {
+  const url = `${this.apiUrl}/search/movie?query=${searchText}&page=${currentPage}&api_key=${this.apiKey}`;
+  return this.fetchFromApi<ApiResponse<Movie>>(url);
+}
+
 
   async getMovieReviewList(
     movieId: string
@@ -56,6 +57,11 @@ export default class ApiClient {
   }
 
   async getMovieListNowPlaying(): Promise<ApiResponse<Movie> | ApiError> {
+    const url = `${this.apiUrl}/movie/now_playing?api_key=${this.apiKey}`;
+    return this.fetchFromApi<ApiResponse<Movie>>(url);
+  }
+
+   async getMovieListUpcoming(): Promise<ApiResponse<Movie> | ApiError> {
     const url = `${this.apiUrl}/movie/now_playing?api_key=${this.apiKey}`;
     return this.fetchFromApi<ApiResponse<Movie>>(url);
   }

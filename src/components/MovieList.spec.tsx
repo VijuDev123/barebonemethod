@@ -5,7 +5,7 @@ import { screen, waitFor } from "@testing-library/react";
 
 import { render } from "../utils/test/testUtils"; // cusom render function
 import movieApiClient from "../utils/apiClient";
-import MovieList from "./MovieList";
+import { MovieList } from "./MovieList";
 
 jest.mock("../utils/apiClient", () => ({
   getMovieList: jest.fn(),

@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
+
 import movieApiClient from "../utils/apiClient";
 import MovieSlider from "./MovieSlider";
 
-export default function TrendingNow() {
-  const [movieListTrending, setMovieListTrending] = useState<Movie[]>([]);
+export default function UpcomingMovies() {
+  const [movieListUpcoming, setMovieListUpcoming] = useState<Movie[]>([]);
   const [error, setFetchError] = useState<ApiError | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -11,11 +12,11 @@ export default function TrendingNow() {
     const fetchMovies = async () => {
       try {
         setLoading(true);
-        const data = await movieApiClient.getMovieListNowPlaying();
+        const data = await movieApiClient.getMovieListUpcoming();
         if ("message" in data) {
           setFetchError({ message: data.message, isError: true });
         } else {
-          setMovieListTrending(data.results);
+          setMovieListUpcoming(data.results);
         }
       } catch (err) {
         setFetchError({ message: "An error occured.", isError: true });
@@ -29,11 +30,11 @@ export default function TrendingNow() {
 
   return (
     <MovieSlider
-      movieList={movieListTrending}
+      movieList={movieListUpcoming}
       error={error}
-      headingText="Trending"
+      headingText="Upcoming"
       loading={loading}
-      listType="trending"
+      listType="upcoming"
     />
   );
 }
